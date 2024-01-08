@@ -8,12 +8,18 @@ const Router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    loader: async()=>{
+      return 1000
+    }, 
     children: [
       { path: "", element: <Home /> },
       { path: "forms", element: <Forms /> },
       {
         path: "user/:userId",
         element: <User />,
+        loader: async()=>{
+          return 1000
+        }, 
         children: [
           {
             path: "followers",

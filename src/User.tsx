@@ -1,27 +1,33 @@
 import { useState } from "react";
-import { Outlet, useOutletContext, useParams } from "react-router-dom";
+import { Outlet, useLoaderData, useParams } from "react-router-dom";
 interface IUser {
   nameOfMyUser: string;
-  testNumber: number;
+  testNumber?: number;
+}
+interface ITest{
+  test: number
 }
 function User() {
+  const test = useLoaderData();
+  console.log('>>test>>', test);
   const { userId } = useParams();
-  const { pageData } = useState<IUser>({
-    nameOfMyUser: "NAME",
-    testNumber: 100,
-  });
+  const [pageData, setPageData] = useState<IUser>(
+    {nameOfMyUser: "NAME",}
+  );
 
-  console.log("pageData", pageData);
-  // const pageData = () => {
-  //   return {
 
-  //   };
+  
+  // const pageData ={
+  //   // return {
+  //     nameOfMyUser: "NAME",
+  //     testNumber: 100,
+  //   // };
   // };
 
   return (
     <div>
       <h3>User: {userId}</h3>
-      <Outlet context={pageData} />
+      <Outlet context={{pageData}} />
     </div>
   );
 }
