@@ -1,17 +1,14 @@
 import React from "react";
-import { Outlet, useLoaderData } from "react-router-dom";
-import Circle from "./Circle";
-import Forms from "./Forms";
-import Router from "./Router";
+import { Outlet } from "react-router-dom";
+import GlobalStyles from "./styles/reset";
 function App() {
-  
-
   return (
-    <div>
+    <>
+      <GlobalStyles />
       <Outlet context={{ isDark: false }} />
       {/* <Circle bgColor="teal" />
     <Circle bgColor="skyblue" borderColor="blue"/> */}
-    </div>
+    </>
   );
 }
 

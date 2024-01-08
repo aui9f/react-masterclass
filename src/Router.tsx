@@ -1,9 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
-import Followers from "./Followers";
-import Forms from "./Forms";
-import Home from "./Home";
-import User from "./User";
+import Coin from "./routes/Coin";
+import Coins from "./routes/Coins";
+
+const Router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Coins />,
+  },
+  {
+    path: ":coinId",
+    element: <Coin />,
+  },
+]);
+/*
 const Router = createBrowserRouter([
   {
     path: "/",
@@ -30,4 +39,5 @@ const Router = createBrowserRouter([
     ],
   },
 ]);
+*/
 export default Router;
