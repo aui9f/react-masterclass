@@ -7,9 +7,9 @@ interface IFollowers {
   pageData: IpageData;
 }
 function Followers() {
-  const { nameOfMyUser } = useOutletContext<IpageData>();
-  console.log("nameOfMyUser >>>", nameOfMyUser);
-  // console.log("testNumber >>>", testNumber);
+  const { pageData } = useOutletContext<IFollowers>();
+  console.log("pageData >>>", pageData);
+  
 
   return <>followers:</>;
 }
