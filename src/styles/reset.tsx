@@ -52,8 +52,11 @@ const GlobalStyles = createGlobalStyle`
   content: none;
   }
   table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  a{
+    text-decoration-line: none;
   }
   `;
 
