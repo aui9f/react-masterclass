@@ -9,7 +9,7 @@ declare module 'styled-components' {
     bgColor: string;
     textColor: string;
     btnColor?: string;
-
+    accentColor?: string;
     // colors: {
     //   main: string;
     //   secondary: string;
