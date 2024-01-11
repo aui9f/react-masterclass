@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Outlet, useLocation, useMatch, useParams } from "react-router-dom";
 import { styled } from "styled-components";
+import { fetchCoin, fetchTickers } from "../api";
 
 const Container = styled.div`
   background-color: gray;
@@ -52,7 +54,7 @@ const Tabs = styled.div`
 //<{ isActive: boolean }>
 // color: ${(props) =>
 // props.isActive ? props.theme.accentColor : props.theme.textColor};
-const Tab = styled.span<{isActive: boolean}>`
+const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
   font-size: 12px;
@@ -60,13 +62,11 @@ const Tab = styled.span<{isActive: boolean}>`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor: 'gray'};
+  color: ${(props) => (props.isActive ? props.theme.accentColor : "gray")};
   a {
     display: block;
   }
 `;
-
 
 interface IInfo {
   id: string;
@@ -105,85 +105,108 @@ interface IPrice {
 
 interface ILocation {
   state: {
-    name: string
+    name: string;
   };
 }
 
 function Coin() {
-  const [isLoading, setIsLoading] = useState(true);
   const { coinId } = useParams<{ coinId: string }>(); // 나중에왜 이렇게 작성해야하는지 확인
   const { state } = useLocation() as ILocation; // 나중에왜 이렇게 작성해야하는지 확인
 
+  const priceMatch = useMatch("/:coinId/price");
+  const chartMatch = useMatch("/:coinId/chart");
 
-  const [info, setInfo] = useState<IInfo>();
-  const [priceInfo, setPrice] = useState<IPrice>();
+  const { isLoading: infoIsLoading, data: infoData } = useQuery<IInfo>(
+    ["info", coinId],
+    () => fetchCoin(coinId!)
+  );
+  const { isLoading: tickersIsLoading, data: tickersData } = useQuery<IPrice>(
+    ["price", coinId],
+    () => fetchTickers(coinId!)
+  );
+  /**
+   * 
+    이렇게 coinId 뒤에 !만 넣어줬더니 정상작동했습니다
+    !=> 확장 할당 어션셜로 값이 무조건 할당되어있다고 컴파일러에게 전달해 값이 없어도 변수를 사용할 수 있게 한다고 합니다.
 
-  const priceMatch = useMatch('/:coinId/price')
-  const chartMatch = useMatch('/:coinId/chart');
 
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setPrice(priceData);
-      setIsLoading(false);
-    })();
-  }, [coinId]);
+https://stackoverflow.com/questions/54496398/typescript-type-string-undefined-is-not-assignable-to-type-string/54496418
+
+https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#non-null-assertion-operator
+
+
+
+   */
+
+  const isLoading = infoIsLoading || tickersIsLoading;
+  // const [info, setInfo] = useState<IInfo>();
+  // const [priceInfo, setPrice] = useState<IPrice>();
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const infoData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+  //     ).json();
+  //     setInfo(infoData);
+  //     const priceData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+  //     ).json();
+  //     setPrice(priceData);
+  //     setIsLoading(false);
+  //   })();
+  // }, [coinId]);
   //두번째 인자는 컴포넌트 시작에만 실행하고 싶을땐 [] 를 사용하며
   // [coinId] coinId가 변할때마다 실행
 
+  return (
+    <>
+      <Container>
+        <Header>
+          <Title>
+            {state?.name || (isLoading ? "Loding.." : infoData?.name)}
+          </Title>
+        </Header>
+        {isLoading ? (
+          <Loader>Loading...</Loader>
+        ) : (
+          <>
+            <Overview>
+              <OverviewItem>
+                <span>Rank:</span>
+                <span>{infoData?.rank}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Symbol:</span>
+                <span>${infoData?.symbol}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Open Source:</span>
+                <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              </OverviewItem>
+            </Overview>
+            <Description>{infoData?.description}</Description>
+            <Overview>
+              <OverviewItem>
+                <span>Total Suply:</span>
+                <span>{tickersData?.total_supply}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Max Supply:</span>
+                <span>{tickersData?.max_supply}</span>
+              </OverviewItem>
+            </Overview>
 
-  return <>
-    <Container>
-      <Header>
-        <Title>{state?.name || (isLoading?'Loding..':info?.name)}</Title>
-      </Header>
-      { isLoading ?( 
-        <Loader>Loading...</Loader>
-      ):(
-        <>
-           <Overview>
-            <OverviewItem>
-              <span>Rank:</span>
-              <span>{info?.rank}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Symbol:</span>
-              <span>${info?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
-            </OverviewItem>
-          </Overview>
-          <Description>{info?.description}</Description>
-          <Overview>
-            <OverviewItem>
-              <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
-            </OverviewItem>
-          </Overview>
-          
-          <Tabs>
-            <Tab isActive={chartMatch!==null}>Chart</Tab>
-            <Tab isActive={priceMatch!==null}>Price</Tab>
-          </Tabs>
+            <Tabs>
+              <Tab isActive={chartMatch !== null}>Chart</Tab>
+              <Tab isActive={priceMatch !== null}>Price</Tab>
+            </Tabs>
 
-          <Outlet/>
-        </>
-      )}
-    </Container>
-  
-  </>;
+            <Outlet />
+          </>
+        )}
+      </Container>
+    </>
+  );
 }
 
 export default Coin;
