@@ -1,15 +1,14 @@
 // import original module declarations
-import 'styled-components';
-
+import "styled-components";
 
 // and extend them!
-declare module 'styled-components' {
-    // DefaultTheme을 확장
+declare module "styled-components" {
+  // DefaultTheme을 확장
   export interface DefaultTheme {
     bgColor: string;
     textColor: string;
     btnColor?: string;
-    accentColor?: string;
+    accentColor: string;
     // colors: {
     //   main: string;
     //   secondary: string;

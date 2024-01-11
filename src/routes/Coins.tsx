@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
@@ -9,24 +8,30 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  border: 1px solid ${(props) => props.theme.accentColor || "gray"};
+  color: ${(props) => props.theme.accentColor};
+
   height: 15vh;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  h1 {
+    color: ${(props) => props.theme.accentColor || "red"};
+  }
 `;
 
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: #eeeeee;
+  background-color: white;
   color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
   a {
     padding: 20px;
     transition: color 0.2s ease-in;
-    display: flex;
-    align-items: center;
+    display: block;
   }
   &:hover {
     a {
@@ -59,7 +64,6 @@ interface ICoins {
   type: string;
 }
 function Coins() {
-
   // const [coins, setCoins] = useState<ICoins[]>([]);
   // const [isLoading, setIsLoading] = useState(true);
   // useEffect(() => {
@@ -71,7 +75,7 @@ function Coins() {
   //   })();
   // }, []);
 
-  const {isLoading, error, data } = useQuery<ICoins[]>('allCoins', fetchCoins);
+  const { isLoading, error, data } = useQuery<ICoins[]>("allCoins", fetchCoins);
   //('쿼리고유식별자', fetcher함수)
 
   return (
@@ -83,14 +87,23 @@ function Coins() {
         <Loader>'LOADING...'</Loader>
       ) : (
         <CoinsList>
-          {data?.slice(0, 100).map((coin) => (<Coin key={coin.id}>
-              <Link to={`${coin.id}`} state={{name: coin.id}}>
+          <Coin>
+            <Link to={"test"} state={{ name: `test` }}>
+              <img />
+              Test &rarr;
+            </Link>
+          </Coin>
+
+          {data?.slice(0, 100).map((coin) => (
+            <Coin key={coin.id}>
+              <Link to={`${coin.id}`} state={{ name: coin.id }}>
                 <Img
                   src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
                 />
                 {coin.name} &rarr;
               </Link>
-            </Coin>))}
+            </Coin>
+          ))}
           {/* {data?.slice(0, 100).((coin) => (
             <Coin key={coin.id}>
               <Link to={`${coin.id}`} state={{name: coin.id}}>
