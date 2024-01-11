@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Outlet, useLocation, useMatch, useParams } from "react-router-dom";
+import { Link, Outlet, useLocation, useMatch, useParams } from "react-router-dom";
 import { styled } from "styled-components";
 import { fetchCoin, fetchTickers } from "../api";
-
+import {Helmet} from "react-helmet";
+/**
+ * npm install react-helmet
+ * npm install --save react-helmet
+ * npm i --save-dev @types/react-helmet
+ */
 const Container = styled.div`
-  background-color: gray;
+  /* background-color: gray; */
   padding: 20px;
 `;
 const Header = styled.header`
@@ -62,7 +67,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) => (props.isActive ? props.theme.accentColor : "gray")};
+  color: ${(props) => (props.isActive ? props.theme.accentColor : "#eeeeee")};
   a {
     display: block;
   }
@@ -90,6 +95,13 @@ interface IInfo {
   last_data_at: string;
 }
 
+interface IUSDPrice{
+  price: number;
+}
+interface IQuotes {
+  USD: IUSDPrice
+}
+
 interface IPrice {
   id: string;
   name: string;
@@ -101,6 +113,7 @@ interface IPrice {
   beta_value: number;
   first_data_at: string;
   last_updated: string;
+  quotes: IQuotes;
 }
 
 interface ILocation {
@@ -122,7 +135,10 @@ function Coin() {
   );
   const { isLoading: tickersIsLoading, data: tickersData } = useQuery<IPrice>(
     ["price", coinId],
-    () => fetchTickers(coinId!)
+    () => fetchTickers(coinId!), {
+      // 백그라운드에서 실행
+      // reetchInterval: 5000, // 5초마다 실행
+    }
   );
   /**
    * 
@@ -139,27 +155,19 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#n
    */
 
   const isLoading = infoIsLoading || tickersIsLoading;
-  // const [info, setInfo] = useState<IInfo>();
-  // const [priceInfo, setPrice] = useState<IPrice>();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const infoData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-  //     ).json();
-  //     setInfo(infoData);
-  //     const priceData = await (
-  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-  //     ).json();
-  //     setPrice(priceData);
-  //     setIsLoading(false);
-  //   })();
-  // }, [coinId]);
-  //두번째 인자는 컴포넌트 시작에만 실행하고 싶을땐 [] 를 사용하며
-  // [coinId] coinId가 변할때마다 실행
 
   return (
     <>
+
+    {/* // https://www.npmjs.com/package/react-helmet */}
+    
+     <Helmet>
+        
+        <title>{state?.name || (isLoading ? "Loding.." : infoData?.name)}</title>
+        
+    </Helmet>
+    
       <Container>
         <Header>
           <Title>
@@ -180,9 +188,13 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#n
                 <span>${infoData?.symbol}</span>
               </OverviewItem>
               <OverviewItem>
+                <span>Price:</span>
+                <span>{tickersData?.quotes?.USD?.price.toFixed(2) || '-'}</span>
+              </OverviewItem>
+               {/* <OverviewItem>
                 <span>Open Source:</span>
                 <span>{infoData?.open_source ? "Yes" : "No"}</span>
-              </OverviewItem>
+              </OverviewItem> */}
             </Overview>
             <Description>{infoData?.description}</Description>
             <Overview>
@@ -197,11 +209,12 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#n
             </Overview>
 
             <Tabs>
-              <Tab isActive={chartMatch !== null}>Chart</Tab>
+              <Link to={'chart'}><Tab isActive={chartMatch !== null}>Chart</Tab></Link>
+              
               <Tab isActive={priceMatch !== null}>Price</Tab>
             </Tabs>
 
-            <Outlet />
+            <Outlet context={{coinId}} />
           </>
         )}
       </Container>
