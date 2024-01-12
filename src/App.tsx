@@ -12,13 +12,17 @@ function App() {
   // const [isDark, setIsDark] = useState(false);
   // const toggleMode = ()=>setIsDark(current=>!current);
   const isDark = useRecoilValue(isDarkAtom)
+  
   return (
     <>
       <ThemeProvider theme={isDark?darkTheme:lightTheme}>
         <GlobalStyles />
         <RouterProvider router={Router} />
         {/* <button type="button" onClick={toggleMode}>Toggle Mode</button> */}
-        <><Outlet /></>
+        <div>test</div>
+        <div><Outlet /></div>
+
+        
         {/* <Circle bgColor="teal" />
         <Circle bgColor="skyblue" borderColor="blue"/> */}
         <ReactQueryDevtools initialIsOpen={true}/>

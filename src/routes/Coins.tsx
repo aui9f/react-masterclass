@@ -3,6 +3,8 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 import { fetchCoins } from "../common/api";
+import { useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../common/atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -60,24 +62,15 @@ interface ICoins {
 }
 function Coins() {
 
-  // const [coins, setCoins] = useState<ICoins[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
-  //     const json = await response.json();
-  //     setCoins(json.slice(0, 100));
-  //     setIsLoading(false);
-  //   })();
-  // }, []);
-
   const {isLoading, error, data } = useQuery<ICoins[]>('allCoins', fetchCoins);
-  //('쿼리고유식별자', fetcher함수)
+  const changeMode = useSetRecoilState(isDarkAtom);
+  const toggleMode = () => changeMode((prev=>!prev))
 
   return (
     <Container>
       <Header>
         <Title>LIST</Title>
+        <button type="button" onClick={toggleMode}>Change Mode</button>
       </Header>
       {isLoading ? (
         <Loader>'LOADING...'</Loader>
