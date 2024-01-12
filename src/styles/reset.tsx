@@ -38,7 +38,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     line-height: 1;
-    color:${(props) => props.theme.textColor}
+    background-color: ${(props) => props.theme.bgColor};
   }
   menu, ol, ul {
   list-style: none;
@@ -54,9 +54,6 @@ const GlobalStyles = createGlobalStyle`
   table {
     border-collapse: collapse;
     border-spacing: 0;
-  }
-  a{
-    text-decoration-line: none;
   }
   `;
 

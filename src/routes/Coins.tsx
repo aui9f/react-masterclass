@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import { fetchCoins } from "../api";
+import { fetchCoins } from "../common/api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -18,7 +18,7 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: #eeeeee;
+  background-color: ${(props) => props.theme.textColor};;
   color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;

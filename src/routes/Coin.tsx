@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link, Outlet, useLocation, useMatch, useParams } from "react-router-dom";
 import { styled } from "styled-components";
-import { fetchCoin, fetchTickers } from "../api";
+import { fetchCoin, fetchTickers } from "../common/api";
 import {Helmet} from "react-helmet";
 /**
  * npm install react-helmet
