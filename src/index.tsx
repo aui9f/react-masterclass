@@ -8,6 +8,7 @@ import Router from "./Router";
 import { ReactQueryDevtools } from 'react-query/devtools';
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { RecoilRoot } from "recoil";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -16,6 +17,7 @@ const queryClient = new QueryClient()
 
 root.render(
   <React.StrictMode>
+    <RecoilRoot>
     <QueryClientProvider client={queryClient}>
 
       <ThemeProvider theme={darkTheme}>
@@ -26,5 +28,6 @@ root.render(
       <ReactQueryDevtools initialIsOpen={true}/>
     
     </QueryClientProvider>
+    </RecoilRoot>
   </React.StrictMode>
 );
