@@ -1,6 +1,9 @@
 import { createGlobalStyle } from "styled-components";
+import NanumGothic from "./font/NanumGothic.woff";
 
 const GlobalStyles = createGlobalStyle`
+
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
     
   /* http://meyerweb.com/eric/tools/css/reset/
   v5.0.1 | 20191019
@@ -24,7 +27,6 @@ const GlobalStyles = createGlobalStyle`
   padding: 0;
   border: 0;
   font-size: 100%;
-  font: inherit;
   vertical-align: baseline;
   }
   /* HTML5 display-role reset for older browsers */
@@ -57,6 +59,31 @@ const GlobalStyles = createGlobalStyle`
   }
   a{
     text-decoration-line: none;
+  }
+  @font-face {
+    font-family: 'NanumGothic';
+    font-family: 'NanumGothic';
+        src: local('NanumGothic'), local('NanumGothic');
+        font-style: normal;
+        src: url(${NanumGothic}) format('truetype');
+  }
+  *{
+    box-sizing: border-box;
+    font-family: 'Roboto', 'Nanum Gothic', sans-serif;
+  }
+  body{
+    background-color: ${(props) => props.theme.bgColor}
+  }
+
+  a {
+    color: inherit; 
+    text-decoration: none; 
+    outline: none;
+
+  }
+  a:hover, a:active {
+    text-decoration: none; 
+    color:#fff; 
   }
   `;
 

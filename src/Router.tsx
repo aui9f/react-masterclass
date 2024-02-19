@@ -13,37 +13,10 @@ const Router = createBrowserRouter([
     path: ":coinId",
     element: <Coin />,
     children: [
-      {path: 'chart', element: <Chart/>},
-      {path: 'price', element: <Price/>},
-    ]
-  },
-]);
-/*
-const Router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    loader: async()=>{
-      return 1000
-    }, 
-    children: [
-      { path: "", element: <Home /> },
-      { path: "forms", element: <Forms /> },
-      {
-        path: "user/:userId",
-        element: <User />,
-        loader: async()=>{
-          return 1000
-        }, 
-        children: [
-          {
-            path: "followers",
-            element: <Followers />,
-          },
-        ],
-      },
+      { path: "chart", element: <Chart /> },
+      { path: "price", element: <Price /> },
     ],
   },
 ]);
-*/
+
 export default Router;
