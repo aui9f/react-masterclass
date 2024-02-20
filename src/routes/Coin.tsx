@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Link, Outlet, useLocation, useMatch, useParams } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatch,
+  useParams,
+} from "react-router-dom";
 import { styled } from "styled-components";
 import { fetchCoin, fetchTickers } from "../api";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 /**
  * npm install react-helmet
  * npm install --save react-helmet
@@ -95,11 +101,11 @@ interface IInfo {
   last_data_at: string;
 }
 
-interface IUSDPrice{
+interface IUSDPrice {
   price: number;
 }
 interface IQuotes {
-  USD: IUSDPrice
+  USD: IUSDPrice;
 }
 
 interface IPrice {
@@ -135,7 +141,8 @@ function Coin() {
   );
   const { isLoading: tickersIsLoading, data: tickersData } = useQuery<IPrice>(
     ["price", coinId],
-    () => fetchTickers(coinId!), {
+    () => fetchTickers(coinId!),
+    {
       // 백그라운드에서 실행
       // reetchInterval: 5000, // 5초마다 실행
     }
@@ -156,18 +163,16 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#n
 
   const isLoading = infoIsLoading || tickersIsLoading;
 
-
   return (
     <>
+      {/* // https://www.npmjs.com/package/react-helmet */}
 
-    {/* // https://www.npmjs.com/package/react-helmet */}
-    
-     <Helmet>
-        
-        <title>{state?.name || (isLoading ? "Loding.." : infoData?.name)}</title>
-        
-    </Helmet>
-    
+      <Helmet>
+        <title>
+          {state?.name || (isLoading ? "Loding.." : infoData?.name)}
+        </title>
+      </Helmet>
+
       <Container>
         <Header>
           <Title>
@@ -189,9 +194,9 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#n
               </OverviewItem>
               <OverviewItem>
                 <span>Price:</span>
-                <span>{tickersData?.quotes?.USD?.price.toFixed(2) || '-'}</span>
+                <span>{tickersData?.quotes?.USD?.price.toFixed(2) || "-"}</span>
               </OverviewItem>
-               {/* <OverviewItem>
+              {/* <OverviewItem>
                 <span>Open Source:</span>
                 <span>{infoData?.open_source ? "Yes" : "No"}</span>
               </OverviewItem> */}
@@ -209,12 +214,14 @@ https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html#n
             </Overview>
 
             <Tabs>
-              <Link to={'chart'}><Tab isActive={chartMatch !== null}>Chart</Tab></Link>
-              
+              <Link to={"chart"}>
+                <Tab isActive={chartMatch !== null}>Chart</Tab>
+              </Link>
+
               <Tab isActive={priceMatch !== null}>Price</Tab>
             </Tabs>
 
-            <Outlet context={{coinId}} />
+            <Outlet context={{ coinId }} />
           </>
         )}
       </Container>

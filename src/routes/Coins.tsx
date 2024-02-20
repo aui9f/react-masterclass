@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+
 import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 import { fetchCoins } from "../api";
@@ -27,6 +28,7 @@ const CoinsList = styled.ul``;
 
 const Coin = styled.li`
   background-color: white;
+
   color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
@@ -56,10 +58,12 @@ const Img = styled.img`
   height: 24px;
   margin-right: 8px;
 `;
+
 const ToggleBtn = styled.button`
   background-color: pink;
   margin: 0 12px;
 `;
+
 interface ICoins {
   id: string;
   name: string;
@@ -80,6 +84,7 @@ function Coins() {
     <Container>
       <Header>
         <Title>LIST</Title>
+
         <ToggleBtn onClick={toggle}>Toggle</ToggleBtn>
       </Header>
       {isLoading ? (

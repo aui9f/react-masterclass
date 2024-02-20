@@ -10,11 +10,14 @@ import { darkTheme, lightTheme } from "./theme";
 
 function App() {
   const isDark = useRecoilValue(isDarkAtom);
+
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyles />
+
         <Outlet />
+
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>

@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { useOutletContext } from "react-router-dom";
+
 import { fetchCoinHistory } from "../api";
 import ApexCharts from "react-apexcharts";
 import { useRecoilValue } from "recoil";

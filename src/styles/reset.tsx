@@ -36,10 +36,6 @@ const GlobalStyles = createGlobalStyle`
   *[hidden] {
   display: none;
   }
-  body {
-    line-height: 1;
-
-  }
   menu, ol, ul {
   list-style: none;
   }
@@ -55,10 +51,12 @@ const GlobalStyles = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
   a{
     text-decoration-line: none;
   }
   body{
+    line-height: 1;
     background-color: ${(props) => props.theme.bgColor};
   }
   `;

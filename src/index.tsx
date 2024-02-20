@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+
 import { RouterProvider } from "react-router-dom";
 import Router from "./Router";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,8 +19,7 @@ root.render(
     <RecoilRoot>
       <QueryClientProvider client={queryClient}>
         <App />
-        <RouterProvider router={Router} />
-      </QueryClientProvider>
+
     </RecoilRoot>
   </React.StrictMode>
 );
