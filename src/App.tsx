@@ -8,7 +8,7 @@ function App() {
       <GlobalStyles />
       <Outlet context={{ isDark: false }} />
 
-      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   );
 }

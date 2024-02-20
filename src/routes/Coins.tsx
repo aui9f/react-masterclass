@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoins } from "../api";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -59,51 +61,57 @@ interface ICoin {
   type: string;
 }
 export default function Coins() {
-  const [coins, setCoins] = useState<ICoin[]>([]);
-  const [isLoading, setIsLoding] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await (
-          await fetch("https://api.coinpaprika.com/v1/coins")
-        ).json();
-        setCoins(response.slice(0, 100));
-      } catch (error) {
-        setCoins([
-          {
-            id: "btc-bitcoin",
-            name: "Bitcoin",
-            symbol: "BTC",
-            rank: 1,
-            is_new: false,
-            is_active: true,
-            type: "coin",
-          },
-          {
-            id: "eth-ethereum",
-            name: "Ethereum",
-            symbol: "ETH",
-            rank: 2,
-            is_new: false,
-            is_active: true,
-            type: "coin",
-          },
-          {
-            id: "hex-hex",
-            name: "HEX",
-            symbol: "HEX",
-            rank: 3,
-            is_new: false,
-            is_active: true,
-            type: "token",
-          },
-        ]);
-      } finally {
-        setIsLoding(false);
-      }
-    })();
-  }, []);
+  const {isLoading, data:coins} = useQuery<ICoin[]>('allCoins', fetchCoins);
+    
+  
+
+  // const [coins, setCoins] = useState<ICoin[]>([]);
+  // const [isLoading, setIsLoding] = useState(true);
+
+  
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await (
+  //         await fetch("https://api.coinpaprika.com/v1/coins")
+  //       ).json();
+  //       setCoins(response.slice(0, 100));
+  //     } catch (error) {
+  //       setCoins([
+  //         {
+  //           id: "btc-bitcoin",
+  //           name: "Bitcoin",
+  //           symbol: "BTC",
+  //           rank: 1,
+  //           is_new: false,
+  //           is_active: true,
+  //           type: "coin",
+  //         },
+  //         {
+  //           id: "eth-ethereum",
+  //           name: "Ethereum",
+  //           symbol: "ETH",
+  //           rank: 2,
+  //           is_new: false,
+  //           is_active: true,
+  //           type: "coin",
+  //         },
+  //         {
+  //           id: "hex-hex",
+  //           name: "HEX",
+  //           symbol: "HEX",
+  //           rank: 3,
+  //           is_new: false,
+  //           is_active: true,
+  //           type: "token",
+  //         },
+  //       ]);
+  //     } finally {
+  //       setIsLoding(false);
+  //     }
+  //   })();
+  // }, []);
   return (
     <Container>
       <Header>
@@ -112,7 +120,7 @@ export default function Coins() {
 
       <CoinsList>
         {isLoading ? <Loading>Loading..</Loading> : null}
-        {coins.map((coin) => (
+        {coins?.slice(0,100)?.map((coin) => (
           <Coin key={coin.id}>
             <Img
               src={`https://cryptocurrencyliveprices.com/img/${coin.id}.png`}
