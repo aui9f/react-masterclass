@@ -3,17 +3,18 @@ import { Outlet } from "react-router-dom";
 import GlobalStyles from "./styles/reset";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ThemeProvider } from "styled-components";
+
+import { isDarkAtom } from "./core/atoms";
+import { useRecoilValue } from "recoil";
 import { darkTheme, lightTheme } from "./theme";
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyles />
-        <Outlet context={{ isDark: true }} />
-        {/* context={{ isDark: true }}  */}
-        {/* <Circle bgColor="teal" />
-        <Circle bgColor="skyblue" borderColor="blue"/> */}
+        <Outlet />
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>

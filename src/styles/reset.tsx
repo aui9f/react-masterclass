@@ -58,6 +58,9 @@ const GlobalStyles = createGlobalStyle`
   a{
     text-decoration-line: none;
   }
+  body{
+    background-color: ${(props) => props.theme.bgColor};
+  }
   `;
 
 export default GlobalStyles;

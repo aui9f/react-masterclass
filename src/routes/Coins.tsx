@@ -1,7 +1,9 @@
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import { styled } from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../core/atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -54,6 +56,10 @@ const Img = styled.img`
   height: 24px;
   margin-right: 8px;
 `;
+const ToggleBtn = styled.button`
+  background-color: pink;
+  margin: 0 12px;
+`;
 interface ICoins {
   id: string;
   name: string;
@@ -64,16 +70,8 @@ interface ICoins {
   type: string;
 }
 function Coins() {
-  // const [coins, setCoins] = useState<ICoins[]>([]);
-  // const [isLoading, setIsLoading] = useState(true);
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch("https://api.coinpaprika.com/v1/coins");
-  //     const json = await response.json();
-  //     setCoins(json.slice(0, 100));
-  //     setIsLoading(false);
-  //   })();
-  // }, []);
+  const setMode = useSetRecoilState(isDarkAtom);
+  const toggle = () => setMode((prev) => !prev);
 
   const { isLoading, error, data } = useQuery<ICoins[]>("allCoins", fetchCoins);
   //('쿼리고유식별자', fetcher함수)
@@ -82,6 +80,7 @@ function Coins() {
     <Container>
       <Header>
         <Title>LIST</Title>
+        <ToggleBtn onClick={toggle}>Toggle</ToggleBtn>
       </Header>
       {isLoading ? (
         <Loader>'LOADING...'</Loader>

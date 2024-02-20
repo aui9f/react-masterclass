@@ -2,28 +2,38 @@ import { useQuery } from "react-query";
 import { useOutletContext } from "react-router-dom";
 import { fetchCoinHistory } from "../api";
 import ApexCharts from "react-apexcharts";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "../core/atoms";
 
 interface IHostoryData {
-    close:string;
-    high:string;
-    low:string;
-    market_cap:number;
-    open:string;
-    time_close:number;
-    time_open:number;
-    volume:string;
+  close: string;
+  high: string;
+  low: string;
+  market_cap: number;
+  open: string;
+  time_close: number;
+  time_open: number;
+  volume: string;
 }
-function Chart(){
+function Chart() {
+  const isDark = useRecoilValue(isDarkAtom);
 
-    const {coinId} = useOutletContext<{coinId:string}>()
-    const {isLoading, error, data} = useQuery<IHostoryData[]>(['ohlcv', coinId], ()=>fetchCoinHistory(coinId), {
-        // refetchInterval: 10000,
-    });
-    
-    return <>
-    <div><p>Chart: {coinId}</p></div>
+  const { coinId } = useOutletContext<{ coinId: string }>();
+  const { isLoading, error, data } = useQuery<IHostoryData[]>(
+    ["ohlcv", coinId],
+    () => fetchCoinHistory(coinId),
+    {
+      // refetchInterval: 10000,
+    }
+  );
 
-    {/* Overload 1 of 2, '(props: Props | Readonly): ReactApexChart', ... 에러뜨신분은
+  return (
+    <>
+      <div>
+        <p>Chart: {coinId}</p>
+      </div>
+
+      {/* Overload 1 of 2, '(props: Props | Readonly): ReactApexChart', ... 에러뜨신분은
     bria 님이 언급해 주셧는데 조금더 첨언할께요
     series data [] 가 받아야 하는 건 number 인데 저희는 data?.map() 으로 읽어올때랑 아닐때를 구분해서 받아야 하는데 읽어오면 number 이지만 못읽어오면 undefind 가 되서 문제가 되는거예요.
     그래서 저 형식이 number 로 강제해주면 해결되는 문제입니다.
@@ -35,33 +45,43 @@ function Chart(){
     data?.map((price) => price.close) as number[]
     */}
 
-    <div>{isLoading?'1':<ApexCharts type="line" 
-        series={ [ 
-        { 
-            name: "Close" , 
-            data: data?.map(price=>Number(price.close)) as number[]
-        }, {
-            name: "Open" , 
-            data: data?.map(price=>Number(price.open)) as number[]
-        }, 
-
-
-        ]} 
-        options={{    
-            theme: { mode: "dark"},
-            chart : {
+      <div>
+        {isLoading ? (
+          "1"
+        ) : (
+          <ApexCharts
+            type="line"
+            series={[
+              {
+                name: "Close",
+                data: data?.map((price) => Number(price.close)) as number[],
+              },
+              {
+                name: "Open",
+                data: data?.map((price) => Number(price.open)) as number[],
+              },
+            ]}
+            options={{
+              theme: { mode: `${isDark ? "dark" : "light"}` },
+              chart: {
                 height: 500,
-                width: 500,                    
-            }, 
-            tooltip: {
+                width: 500,
+              },
+              tooltip: {
                 y: {
-                    formatter: (value)=>`$${value.toFixed(2)}`
-                }
-            },
-            xaxis: {
-                categories: data?.map(x=>new Date(x.time_close).toLocaleDateString()) 
-              }
-        }}/>}</div>
+                  formatter: (value) => `$${value.toFixed(2)}`,
+                },
+              },
+              xaxis: {
+                categories: data?.map((x) =>
+                  new Date(x.time_close).toLocaleDateString()
+                ),
+              },
+            }}
+          />
+        )}
+      </div>
     </>
+  );
 }
 export default Chart;
