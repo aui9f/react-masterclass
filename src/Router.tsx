@@ -3,19 +3,20 @@ import Coin from "./routes/Coin";
 import Coins from "./routes/Coins";
 import Chart from "./coin/Chart";
 import Price from "./coin/Price";
+import TodoList from "./todo/TodoList";
 
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <Coins />,
+    element: <TodoList />,
   },
   {
     path: ":coinId",
     element: <Coin />,
     children: [
-      {path: 'chart', element: <Chart/>},
-      {path: 'price', element: <Price/>},
-    ]
+      { path: "chart", element: <Chart /> },
+      { path: "price", element: <Price /> },
+    ],
   },
 ]);
 /*
