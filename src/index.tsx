@@ -20,7 +20,7 @@ root.render(
     <RecoilRoot>
     <QueryClientProvider client={queryClient}>
 
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={lightTheme}>
         <App />
         <RouterProvider router={Router} />
       </ThemeProvider>

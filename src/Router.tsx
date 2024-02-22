@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import Home from "./Home";
+import CreateUser from "./todo/create-user";
 
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <CreateUser />,
   },
  
 ]);
