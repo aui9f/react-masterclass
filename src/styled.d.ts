@@ -16,3 +16,8 @@ declare module 'styled-components' {
     // };
   }
 }
+
+
+
+// src/types/images.d.ts
+declare module '*.png';
