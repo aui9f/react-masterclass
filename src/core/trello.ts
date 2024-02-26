@@ -1,6 +1,14 @@
 import { atom } from "recoil";
 
-export const TrelloAtom = atom({
+interface TrelloAtom {
+  [key: string]: string[]
+}
+export const TrelloAtom = atom<TrelloAtom>({
   key: "trelloAtom",
-  default: ["a", "b", "c", "d", "e", "f"],
+  // default: ["a", "b", "c", "d", "e", "f"],
+  default: {
+    todo: ["a", "b",],
+    doing: [ "c", "d", "e",],
+    done: [ "f"]
+  }
 });

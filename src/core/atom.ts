@@ -26,14 +26,11 @@ export const categoryState = atom<Categories>({
 
 export const selectedList = selector({
   key: 'selectedTodoList',
+  //get: async ({get}) => {...}비동기
+  //get: (userID) => async () => 매개변수가 있는 경우
   get: ({get})=>{
     const allTodos = get(todosAtom);
     const selected = get(categoryState);
-    
-    if(selected===Categories.ALL){
-      return allTodos;
-    }else{
-      return allTodos.filter(todo=>todo.category === selected);
-    }
+    return selected===Categories.ALL ? allTodos : allTodos.filter(todo=>todo.category === selected);
   }
 })
