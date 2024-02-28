@@ -4,9 +4,11 @@ import Animation from "./Animation";
 import Variants from "./Variants";
 import Drag from "./Drag";
 import Gestures from "./Gestures";
+import StudyMotionsValue from "./StudyMotionsValue";
+import SvgPath from "./SvgPath";
 //https://studiomeal.com/archives/533
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 50vh;
   width: 100vw;
 
 
@@ -25,7 +27,8 @@ border: 1px solid gray;
 
 function Animations(){
   
-  return  <Wrapper>
+  return  <div>
+    <Wrapper>
     <Container>
       
       <Items><Animation/></Items>
@@ -35,8 +38,14 @@ function Animations(){
       <Items><Gestures/></Items>
       
       <Items><Drag/></Items>
+      <Items><SvgPath/></Items>
       </Container>
   </Wrapper>
+  <hr />
+  <div>
+    <StudyMotionsValue/>
+  </div>
+  </div>
 }
 
 export default Animations

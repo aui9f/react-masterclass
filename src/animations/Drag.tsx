@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import styled from "styled-components"
 
 const Box = styled(motion.div)`
@@ -7,6 +8,15 @@ const Box = styled(motion.div)`
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
+`;
+const BiggerBox = styled.div`
+  width: 120px;
+  height: 120px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const boxVariants ={
@@ -21,7 +31,14 @@ const boxVariants ={
   }
 }
 function Drag(){
-  return <Box drag variants={boxVariants} whileDrag="drag"/>
+  const biggerBoxRef = useRef<HTMLDivElement>(null)
+  
+  return <BiggerBox ref={biggerBoxRef}>
+    <Box drag dragConstraints={biggerBoxRef} variants={boxVariants} whileDrag="drag"/>
+    {/* dragElastic={0.5} - 숫자가 1일 수록 Box위에 마우스가 동일하게 움직임*/}
+    {/* dragSnapToOrigin -- 가운데정렬
+     */}
+  </BiggerBox>
   // drag="x" -- x축으로만 움직인다.  [x, y]
 }
 export default Drag
