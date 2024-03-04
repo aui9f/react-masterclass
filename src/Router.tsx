@@ -4,11 +4,21 @@ import { createBrowserRouter } from "react-router-dom";
 // import User from "./User";
 // import CreateUser from "./user/create-user";
 import Animations from "./animations/index";
+import Nomfilx from "./nomflix/nomfilx-home";
+import Home from "./nomflix/Home";
+import TvShows from "./nomflix/tv-shows";
 
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <Animations />,
+    element: <Nomfilx />,
+    children: [{
+      path: '/',
+      element: <Home/>
+    },{
+      path: '/tv',
+      element: <TvShows/>
+    }]
   },
 ]);
 export default Router;
