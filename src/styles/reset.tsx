@@ -39,6 +39,7 @@ const GlobalStyles = createGlobalStyle`
   body {
     line-height: 1;
     background-color: ${(props) => props.theme.bgColor};
+    color: ${props=>props.theme.textColor}
   }
   menu, ol, ul {
   list-style: none;
